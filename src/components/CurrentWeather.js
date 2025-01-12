@@ -1,35 +1,27 @@
+import { useEffect } from 'react';
 import { useStoreState } from 'easy-peasy';
 import '../styles/currentWeather.css';
 
 const CurrentWeather = () => {
-  const { currentWeatherData } = useStoreState(state => ({
-    currentWeatherData: state.currentWeatherData
+  const { currentWeatherData } = useStoreState((state) => ({
+    currentWeatherData: state.currentWeatherData,
   }));
 
-  return (
-      currentWeatherData !== null
-      ?
-      <div className='currentWeatherContainer'>
-        <div className='currentSummaryRow'>
-          <img className='currentImg' src={'https://darksky.net' + currentWeatherData.icon} alt='Weather Img'/>
-          <h3>{currentWeatherData.summary.slice(0, -1)}</h3>
-        </div>
-        <div className='highLowRow'>
-          <h5>Feels like: {currentWeatherData.feelsLike}</h5>
-          <h5>High: {currentWeatherData.maxTemp}</h5>
-          <h5>Low: {currentWeatherData.minTemp}</h5>
-        </div>
-        <h3 className='restOfDay'>{currentWeatherData.restOfDay.slice(0, -1)}</h3>
-      </div>
-      :
+  useEffect(() => {
+    console.log('currentWeatherData', currentWeatherData);
+  }, [currentWeatherData]);
+
+  // Show a loading or placeholder UI if we have no weather data
+  if (!currentWeatherData) {
+    return (
       <div className='currentWeatherContainerLoading'>
         <div className='currentSummaryRow'>
           <div className='loadingCurWeatherImg'></div>
           <div className='loadingCurWeatherSummary'></div>
         </div>
         <div className='highLowRow'>
-          <div className='loadingCurWeatherFeelsLike'></div>
           <div className='loadingCurWeatherLow'></div>
+          <div className='loadingCurWeatherFeelsLike'></div>
           <div className='loadingCurWeatherHigh'></div>
         </div>
         <div className='restOfDay'>
@@ -37,7 +29,39 @@ const CurrentWeather = () => {
           <div className='loadingCurWeatherRestOfDay2'></div>
         </div>
       </div>
-  )
-}
+    );
+  }
+
+  return (
+    <div className='currentWeatherContainer'>
+      <div className='currentSummaryRow'>
+        {/* WeatherAPI returns an icon URL like "//cdn.weatherapi.com/weather/64x64/day/113.png". 
+            If it starts with "//", prefix with "https:". */}
+        <img 
+          className='currentImg'
+          src={
+            currentWeatherData.icon.startsWith('//') 
+              ? 'https:' + currentWeatherData.icon
+              : currentWeatherData.icon
+          }
+          alt='Weather'
+        />
+        <h3 className='restOfDay'>Today: {currentWeatherData.restOfDay}</h3>
+        
+        {/* Brief description, e.g., "Sunny", "Partly cloudy" */}
+        <h3>{currentWeatherData.condition}</h3>
+      </div>
+
+      <div className='highLowRow'>
+        <div className='highLowRow-item'>Low: {currentWeatherData.minTemp}°F</div>
+        <div className='highLowRow-item'>Current: {currentWeatherData.feelsLike}°F</div>
+        <div className='highLowRow-item'>High: {currentWeatherData.maxTemp}°F</div>
+      </div>
+      
+      {/* "Rest of Day" text: you can call it a summary or forecast text. */}
+    
+    </div>
+  );
+};
 
 export default CurrentWeather;

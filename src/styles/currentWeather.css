@@ -6,17 +6,12 @@
 .currentWeatherContainer {
     grid-area: popMid;
     margin-top: 0.2rem;
-    display: grid;
-    grid-template-rows: -webkit-max-content 1rem 1fr;
-    grid-template-rows: max-content 1rem 1fr;
-    grid-template-columns: 1fr;
-    grid-template-areas:
-    "currentSummaryRow"
-    "highLowRow"
-    "restOfDay";
+    display: flex;
+    flex-direction: column;
     width: 100%;
     height: 100%;
     max-width: 25rem;
+    gap: 8px;
 }
 
 .currentSummaryRow {
@@ -25,7 +20,7 @@
     flex-flow: nowrap row;
     justify-content: center;
     align-items: center;
-    gap: 0.5rem;
+    gap: 8px;
     text-align: center;
     margin-top: 0.2rem;
 }
@@ -45,9 +40,17 @@
     margin-top: 0.2rem;
 }
 
-.highLowRow > h5 {
+.highLowRow-item {
     font-weight: 600;
     margin: 0;
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: rgba(255, 255, 255, 0.9);
+    outline: none;
+    border: 2px solid rgba(200, 200, 200, 0.7);
+    border-radius: 8px;
+    padding: 0.2rem 0.4rem;
+    transition: all 0.1s ease-out;
 }
 
 .currentImg {
@@ -63,7 +66,6 @@
     grid-area: restOfDay;
     font-weight: 400;
     margin: 0;
-    text-align: center;
     align-self: center;
 }
 

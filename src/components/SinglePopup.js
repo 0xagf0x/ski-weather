@@ -31,18 +31,29 @@ const SinglePopup = ({ urlRoot }) => {
   const fetchWeeklyWeatherData = async (lat, lon) => {
     try {
       if (currentWeatherData) {
-        const res = await fetch(`${urlRoot}/scrapeWeeklyWeather?lat=${lat}&lon=${lon}`);
+        // Use WeatherAPI's forecast endpoint
+        const API_KEY = process.env.REACT_APP_WEATHERAPI_API_KEY;
+        // e.g. 7 days of forecast
+        const res = await fetch(
+          `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${lat},${lon}&days=7`
+        );
+
         if (!res.ok) {
-            throw new Error('Error')
+          throw new Error('Error fetching weekly forecast');
         }
-        const weather = await res.json();
-        setWeeklyWeatherData(weather);
+
+        const data = await res.json();
+
+        // WeatherAPI returns forecast data in `data.forecast.forecastday` 
+        // (an array of daily forecasts).
+        // You can store the entire data or just the `forecastday` array.
+        setWeeklyWeatherData(data.forecast.forecastday);
         setShowWeeklyWeather(true);
       }
-    } catch(err) {
+    } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   return (
     <div className='popup' >
@@ -81,8 +92,9 @@ const SinglePopup = ({ urlRoot }) => {
           onClick={() => fetchWeeklyWeatherData(selectedResort?.properties?.name ? selectedResort.geometry.coordinates[1] : selectedResort[1], selectedResort?.properties?.name ? selectedResort.geometry.coordinates[0] : selectedResort[0])}
           className={`weeklyWeatherBtn ${darkMode ? 'weeklyWeatherBtnDark' : ''}`}>Weekly Forecast
         </button>
+        
         {
-        selectedResort?.properties?.name
+       currentWebcamLink
         ?
         <button className={`webcamLink ${darkMode ? 'webcamLinkDark' : ''}`}>
           <a href={currentWebcamLink} target='_blank' rel='noopener noreferrer'>Webcams</a>

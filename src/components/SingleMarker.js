@@ -8,6 +8,8 @@ const SingleMarker = ({ resort, urlRoot }) => {
     toggleResortNames: state.stored.toggleResortNames
   }));
 
+  console.log("OpenWeather Key:", process.env.REACT_APP_OPENWEATHER_API_KEY);
+
   const { setSelectedResort, setCurrentWebcamLink, setResortHoverName, setCurrentWeatherData, setShowWeeklyWeather, setWeeklyWeatherData } = useStoreActions(actions => ({
     setSelectedResort: actions.setSelectedResort,
     setCurrentWebcamLink: actions.setCurrentWebcamLink,
@@ -19,16 +21,33 @@ const SingleMarker = ({ resort, urlRoot }) => {
 
   const fetchCurrentWeatherData = async (lat, lon) => {
     try {
-      const res = await fetch(`${urlRoot}/scrapeCurrentWeather?lat=${lat}&lon=${lon}`);
-        if (!res.ok) {
-            throw new Error('Error')
-        }
-        const weather = await res.json();
-        setCurrentWeatherData({...weather});
-    } catch(err) {
-      console.log(err);
+      const API_KEY = process.env.REACT_APP_WEATHERAPI_API_KEY;
+
+      const res = await fetch(
+        `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${lat},${lon}&days=1`
+      );
+      if (!res.ok) throw new Error('Error fetching current weather from WeatherAPI');
+
+      const data = await res.json();
+
+      // Current conditions
+      const current = data.current;
+      // Forecast for "today" (index 0)
+      const today = data.forecast.forecastday[0].day;
+
+      // Compose an object that matches your existing usage:
+      setCurrentWeatherData({
+        summary: current.condition.text,            // Short text like "Sunny", "Rain"
+        icon: current.condition.icon,              // e.g. "//cdn.weatherapi.com/weather/64x64/day/113.png"
+        feelsLike: current.feelslike_f,            // Feels-like temp in Fahrenheit
+        maxTemp: today.maxtemp_f,                  // Daily high
+        minTemp: today.mintemp_f,                  // Daily low
+        restOfDay: today.condition.text,           // Reuse condition text or something else
+      });
+    } catch (err) {
+      console.error(err);
     }
-  }
+  };
 
   const handleResortClick = async (e, resort) => {
     e.preventDefault();
@@ -48,7 +67,7 @@ const SingleMarker = ({ resort, urlRoot }) => {
 
     if (target.tagName === 'DIV') {
       leftSki = target?.childNodes[0]?.childNodes[0];
-      rightSki = target?.childNodes[0]?.childNodes[1]; 
+      rightSki = target?.childNodes[0]?.childNodes[1];
     } else if (target.tagName === 'SVG') {
       leftSki = target?.childNodes[0];
       rightSki = target?.childNodes[1];
@@ -71,7 +90,7 @@ const SingleMarker = ({ resort, urlRoot }) => {
 
     if (target.tagName === 'DIV') {
       leftSki = target?.childNodes[0]?.childNodes[0];
-      rightSki = target?.childNodes[0]?.childNodes[1]; 
+      rightSki = target?.childNodes[0]?.childNodes[1];
     } else if (target.tagName === 'SVG') {
       leftSki = target?.childNodes[0];
       rightSki = target?.childNodes[1];

@@ -102,7 +102,7 @@ const MapComponent = ({ urlRoot }) => {
                 </Marker>
               )
             }
-          }
+          } 
           return temp;
         }, [])
         :
