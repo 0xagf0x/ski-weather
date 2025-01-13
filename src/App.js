@@ -233,6 +233,7 @@ const App = () => {
         fetchRandomWeatherData(e.clientX, e.clientY);
       }
     }
+    
   }
 
   const handleScreenTouch = (e) => {
