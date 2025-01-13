@@ -8,8 +8,6 @@ const SingleMarker = ({ resort, urlRoot }) => {
     toggleResortNames: state.stored.toggleResortNames
   }));
 
-  console.log("OpenWeather Key:", process.env.REACT_APP_OPENWEATHER_API_KEY);
-
   const { setSelectedResort, setCurrentWebcamLink, setResortHoverName, setCurrentWeatherData, setShowWeeklyWeather, setWeeklyWeatherData } = useStoreActions(actions => ({
     setSelectedResort: actions.setSelectedResort,
     setCurrentWebcamLink: actions.setCurrentWebcamLink,
@@ -21,7 +19,7 @@ const SingleMarker = ({ resort, urlRoot }) => {
 
   const fetchCurrentWeatherData = async (lat, lon) => {
     try {
-      const API_KEY = process.env.REACT_APP_WEATHERAPI_API;
+      const API_KEY = process.env.REACT_APP_WEATHERAPI_API_KEY;
 
       const res = await fetch(
         `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${lat},${lon}&days=1`

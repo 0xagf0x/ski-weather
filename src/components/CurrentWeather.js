@@ -7,10 +7,6 @@ const CurrentWeather = () => {
     currentWeatherData: state.currentWeatherData,
   }));
 
-  useEffect(() => {
-    console.log('currentWeatherData', currentWeatherData);
-  }, [currentWeatherData]);
-
   // Show a loading or placeholder UI if we have no weather data
   if (!currentWeatherData) {
     return (

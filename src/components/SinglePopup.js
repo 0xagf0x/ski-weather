@@ -32,7 +32,7 @@ const SinglePopup = ({ urlRoot }) => {
     try {
       if (currentWeatherData) {
         // Use WeatherAPI's forecast endpoint
-        const API_KEY = process.env.REACT_APP_WEATHERAPI_API;
+        const API_KEY = process.env.REACT_APP_WEATHERAPI_API_KEY;
         // e.g. 7 days of forecast
         const res = await fetch(
           `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${lat},${lon}&days=7`
