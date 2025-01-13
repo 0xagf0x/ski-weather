@@ -7,7 +7,10 @@ import skiResorts from "./skiResorts.json";
 import WebMercatorViewport from '@math.gl/web-mercator';
 import './App.css';
 
+
+
 const App = () => {
+  
   const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
   const urlRoot = 'https://resort-forecast-api.herokuapp.com/ski-map';
