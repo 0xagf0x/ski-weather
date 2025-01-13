@@ -15,7 +15,6 @@
             err.message.includes('ResizeObserver loop limit exceeded') ||
             err.message.includes('ResizeObserver loop completed with undelivered notifications')
           ) {
-            // Swallow the error, preventing a React red overlay
             return;
           }
           // Otherwise rethrow
