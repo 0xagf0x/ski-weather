@@ -1,5 +1,5 @@
 
-# Ski Map
+# Ski Weather
 
 A web application that displays ski resorts on a **Mapbox** interactive map, plus current and weekly weather forecasts from **WeatherAPI**. You can also mark favorite resorts and quickly view their conditions.
 
@@ -18,7 +18,7 @@ A web application that displays ski resorts on a **Mapbox** interactive map, plu
 
 ---
 
-# How to Start the Ski Map App
+# How to Start the Ski Weather App
 
 1. **Install Dependencies**  
    ```bash
