@@ -155,7 +155,6 @@ const App = () => {
 
   useEffect(() => {
     document.addEventListener('keydown', zoomToResort);
-
     return () => {
       document.removeEventListener('keydown', zoomToResort);
     }
